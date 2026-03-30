@@ -1,0 +1,25 @@
+{
+  "name": "@forge/scarlet-oath",
+  "version": "0.2.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "simulate": "npx tsx scripts/simulate.ts",
+    "balance": "npx tsx scripts/balance-matrix.ts",
+    "server": "npx tsx server/index.ts",
+    "golden:write": "npx tsx scripts/write-golden-fixture.ts"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/ws": "^8.5.14",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.9"
+  }
+}

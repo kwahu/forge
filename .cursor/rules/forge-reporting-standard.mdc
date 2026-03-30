@@ -1,0 +1,35 @@
+---
+description: Reporting standard: opisy, statusy per gra, opinie agentów
+alwaysApply: true
+---
+
+# FORGE Reporting Standard (opisowy, per-gra)
+
+## 1) Grupa treści per gra
+- Raporty `status i rezultaty` muszą mieć **osobne sekcje per gra**.
+- Każda sekcja gry ma kolejno: `Stan produktu`, `Status wykonania`, `Rezultaty` (jeśli są artefakty), `Opinie agentów (syntetycznie)`.
+
+## 2) Miękki standard ilości liczb
+- Preferuj **opisowe** statusy (co działa / co nie działa / co jest blokowane / co jest następne).
+- Liczby/JSON/tabele dodawaj tylko wtedy, gdy potwierdzają wynik (np. golden seeds “przechodzi”, win-rate wskazuje problem, wersja/regresja jest jednoznaczna).
+- Jeśli dane są niepełne, użyj: „brak jednoznacznych liczb w repo” zamiast dopowiadać.
+
+## 3) Opinie agentów muszą być obowiązkowe
+- Każda sekcja gry musi zawierać `Opinie agentów (syntetycznie)` dla:
+  - `PM, GD, Producer, DEV, QA, Reviewer, Marketing`
+- Każda opinia powinna zawierać:
+  - `co się udało` (1–2 zdania),
+  - `z czego jest niezadowolony / co blokuje` (1–2 zdania) albo jawne „brak blokad / brak danych”,
+  - `next step` (konkretny kierunek na kolejną iterację).
+
+## 4) Evidence-first (bez zgadywania)
+- Każda opinia ma mieć przynajmniej jedno `evidence` w formie linku/ścieżki do repo (np. `docs/BACKLOG.yaml`, `docs/DESIGN_HISTORY.md`, `docs/FEEDBACK_*.md`, `docs/CHANGELOG.yaml`, `GRA_*.md`).
+- Jeżeli evidence nie istnieje, opinia ma zawierać jawne „brak evidence w repo”.
+
+## 5) Reguły dla następnych wersji raportu („na żądanie”)
+- Przy kolejnej prośbie o generację nowej wersji raportu zaktualizuj:
+  - statusy: na podstawie `BACKLOG.yaml`,
+  - wersje i „state product”: na podstawie `MANIFEST.md`,
+  - rezultaty: tylko jeśli pojawiły się nowe artefakty (FEEDBACK/CHANGELOG/test_reporty),
+  - opinie agentów: odśwież (evidence-first), nadal bez długich tabel liczbowych.
+

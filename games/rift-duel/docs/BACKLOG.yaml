@@ -1,0 +1,177 @@
+# Backlog FORGE — Rift Duel (skrót; rozwijaj w kolejnych iteracjach)
+# status: backlog | ready | in_progress | testing | review | done
+
+items:
+  - id: RD-CLI-001
+    title: CLI dla gracza ludzkiego (readline + getVisibility)
+    type: feature
+    priority: P1
+    phase: VERTICAL_SLICE
+    status: backlog
+    notes:
+      - "Priorytet przeniesiony: najpierw web POST /action + UI (0.5.0); CLI opcjonalnie później"
+    assigned_to: DEV
+    requested_by: GD
+    version_target: "0.3.0"
+    acceptance_criteria:
+      - Można rozegrać pełną partię 1v1 (hotseat) z terminala
+      - Historia akcji widoczna po grze
+    effort_estimate: M
+
+  - id: RD-MIS-002
+    title: MissionConfig — modyfikatory startu (np. +1 draw dla AI)
+    type: feature
+    priority: P1
+    phase: VERTICAL_SLICE
+    status: done
+    assigned_to: DEV
+    requested_by: GD
+    dependencies: [RD-WEB-007]
+    version_target: "0.7.3"
+    notes:
+      - "content/campaign.json — extraOpeningDraws per p0/p1; createInitialState(seed, mission); POST /api/sessions { missionId }; stan: missionId"
+    acceptance_criteria:
+      - Jedna przykładowa misja w JSON + test jednostkowy
+    effort_estimate: M
+
+  - id: RD-HTTP-003
+    title: REST API minimalne (POST action, GET state)
+    type: feature
+    priority: P2
+    phase: PLATFORM
+    status: done
+    assigned_to: DEV
+    version_target: "0.5.0"
+    notes:
+      - "POST /api/sessions/:id/action, PATCH .../control (humanAs), GET state/meta/sessions, WS"
+    effort_estimate: L
+
+  - id: RD-WEB-007
+    title: Gra ludzka vs bot w przeglądarce (klikalne legalne ruchy)
+    type: feature
+    priority: P1
+    phase: VERTICAL_SLICE
+    status: done
+    assigned_to: DEV
+    requested_by: GD
+    version_target: "0.5.0"
+    dependencies: [RD-HTTP-003]
+    acceptance_criteria:
+      - "Wybór p0/p1 wysyła PATCH control; opcje w legalNow mają Wykonaj przy turze człowieka"
+    effort_estimate: M
+
+  - id: RD-BOT-008
+    title: Strategie bota (heurystyki) + wybór w API i UI
+    type: feature
+    priority: P1
+    phase: VERTICAL_SLICE
+    status: done
+    assigned_to: DEV
+    requested_by: QA
+    version_target: "0.6.0"
+    notes:
+      - "Wynika z FB-RD-001; moduł src/botStrategies.ts współdzielony z playtest:archetypes"
+    acceptance_criteria:
+      - "POST sessions i PATCH bot przyjmują botStrategy; meta zwraca botStrategies; testy legalności ruchów"
+    effort_estimate: M
+
+  - id: RD-RET-009
+    title: Challenge dnia — ustalony seed + leaderboard lokalny / share link
+    type: feature
+    priority: P2
+    phase: LIVE_OPS
+    status: done
+    assigned_to: DEV
+    requested_by: Marketing
+    notes:
+      - "Wspiera retencję i viral (Steam, social); technicznie seed już deterministyczny"
+      - "0.7.2: GET /api/meta.dailyChallenge + GET /api/daily-challenge/:date; POST sessions { dailyChallenge: true | YYYY-MM-DD } zablokowany seed przy rematchu; UI panel + localStorage rift_daily_results_v1; PATCH bot nie zmienia strategii w sesji wyzwania"
+    version_target: "0.7.2"
+    effort_estimate: M
+
+  - id: RD-NAR-004
+    title: Plik kampanii — 5 misji tekstowych między duelami
+    type: content
+    priority: P2
+    phase: DEPTH
+    status: done
+    assigned_to: GD
+    dependencies: [RD-MIS-002]
+    version_target: "0.7.3"
+    notes:
+      - "content/campaign.json (5 kroków PL); GET /api/meta.campaign; panel Kampania w kliencie (intro + start sesji)"
+    effort_estimate: L
+
+  - id: RD-MKT-005
+    title: One-pager marketingowy + screen mock (ASCII lub Figma link)
+    type: polish
+    priority: P3
+    phase: RELEASE_PREP
+    status: backlog
+    assigned_to: Marketing
+    version_target: "0.6.0"
+    notes:
+      - "Uwzględnić: deterministyczny seed, poziomy bota, hook 'challenge dnia' (por. RD-RET-009)"
+    effort_estimate: S
+
+  - id: RD-QA-006
+    title: Golden seeds — 10 partii zapisanych JSON → regresja metryk
+    type: feature
+    priority: P2
+    phase: QUALITY
+    status: backlog
+    assigned_to: QA
+    version_target: "0.4.0"
+    notes:
+      - "Uwzględnić kilka botStrategy na tym samym seedzie (regresja AI)"
+    effort_estimate: M
+
+  - id: RD-UX-010
+    title: UI — etykiety trybu bota (trening vs widowisko / chaos)
+    type: polish
+    priority: P1
+    phase: VERTICAL_SLICE
+    status: done
+    assigned_to: DEV
+    requested_by: UX
+    version_target: "0.7.0"
+    notes:
+      - "FB-RD-002 UX-FB2-01; jasny podział przy select strategii (copy + ewentualnie grupy)"
+    effort_estimate: S
+
+  - id: RD-UX-011
+    title: Dostępność — aria-describedby / powiązanie opisu strategii bota z selectem
+    type: polish
+    priority: P1
+    phase: QUALITY
+    status: done
+    assigned_to: DEV
+    requested_by: UX
+    version_target: "0.7.0"
+    notes:
+      - "FB-RD-002 UX-FB2-02; nie tylko atrybut title"
+    effort_estimate: S
+
+  - id: RD-UX-012
+    title: Lista legalnych ruchów — tryb kompaktowy lub grupowanie (anti-paralysis)
+    type: feature
+    priority: P1
+    phase: VERTICAL_SLICE
+    status: done
+    assigned_to: DEV
+    requested_by: UX
+    version_target: "0.7.1"
+    notes:
+      - "FB-RD-002 UX-FB2-03; kompakt + grupy Zagrania / Koniec tury (0.7.1)"
+    effort_estimate: M
+
+  - id: RD-PROC-013
+    title: Proces — FB → papier → signoff GD+Producer → backlog → dev → playtest:matrix
+    type: process
+    priority: P2
+    phase: QUALITY
+    status: backlog
+    assigned_to: Producer
+    notes:
+      - "Opisany w docs/FEEDBACK_FB-RD-002.md §8; utrzymywać przy większych zmianach balansu"
+    effort_estimate: S

@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "campaignId": "rift_arc1",
+  "steps": [
+    {
+      "id": "S01_first_breach",
+      "titlePl": "Pierwsza szczelina",
+      "introPl": "Kapitan Straży prowadzi cię na skraj dwóch rzeczywistości. Rytuał arbitrażu wymaga chłodu — ale Rozwarstwienie już czuje puls drugiej strony i dobiera głębiej w chaos niż zwykle.",
+      "extraOpeningDraws": { "p1": 1 }
+    },
+    {
+      "id": "S02_mirror_calm",
+      "titlePl": "Lustrzany spokój",
+      "introPl": "Tym razem granica jest cicha. Żadna ze stron nie ma przewagi w doborze — to czysty pojedynek symboli, bez dodatkowych kart w ręku.",
+      "extraOpeningDraws": {}
+    },
+    {
+      "id": "S03_warden_gift",
+      "titlePl": "Dar Straży",
+      "introPl": "Straż uznała, że potrzebujesz oddechu. Jedna dodatkowa karta trafia do mediatora, zanim Echo zdąży się odezwać — użyj jej mądrze.",
+      "extraOpeningDraws": { "p0": 1 }
+    },
+    {
+      "id": "S04_thin_veil",
+      "titlePl": "Cienka zasłona",
+      "introPl": "Szczelina drży; obie strony widzą ten sam rozkład szans. Żadnych bonusów — tylko twoja decyzja, który symbol zagrać pierwszy.",
+      "extraOpeningDraws": {}
+    },
+    {
+      "id": "S05_echo_pressure",
+      "titlePl": "Nacisk Echa",
+      "introPl": "Echo Veridiana śmieje się z daleka. Rozwarstwienie zgarnia dodatkowy fragment wiedzy przed pierwszym twoim ruchem — to ostatnia próba przed cięższą kampanią.",
+      "extraOpeningDraws": { "p1": 1 }
+    }
+  ]
+}

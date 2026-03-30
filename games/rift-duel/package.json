@@ -1,0 +1,26 @@
+{
+  "name": "@forge/rift-duel",
+  "version": "0.7.3",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "simulate": "npx tsx scripts/simulate.ts",
+    "spectate": "npx tsx scripts/spectate.ts",
+    "playtest:archetypes": "npx tsx scripts/archetype-playtest.ts",
+    "playtest:matrix": "npx tsx scripts/strategy-matrix.ts",
+    "server": "npx tsx server/index.ts"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/ws": "^8.5.14",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.9"
+  }
+}

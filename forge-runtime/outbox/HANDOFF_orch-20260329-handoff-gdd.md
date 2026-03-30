@@ -1,0 +1,3 @@
+# Handoff: FORGE — dokumentacja GDD + historia (2026-03-29)
+
+Utworzono docs/GDD.md (wizja, mechaniki, narracja, misje, marketing, live ops), DESIGN_HISTORY.md, MANIFEST.md, BACKLOG.yaml. GRA_RIFT_DUEL.md wskazuje na GDD. Następna iteracja kodu: RD-CLI-001 (CLI hotseat) wg backlogu. Sprawdź outbox/*.log po zadaniach shell.

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pęknięcie — duel o szczelinę</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="winnerBanner" class="winner-banner hidden" aria-live="polite">
+      <div class="winner-inner">
+        <p class="winner-title">Koniec partii</p>
+        <p class="winner-line" id="winnerLine"></p>
+        <p class="winner-hint">Za chwilę następna partia na tej samej sesji…</p>
+      </div>
+    </div>
+
+    <div id="app">
+      <header class="top">
+        <div>
+          <h1>Pęknięcie</h1>
+          <p class="sub">
+            Strażnik kontra Rozwarstwienie — karty to abstrakcja walki o granice rzeczywistości. Obserwuj, graj z botem lub
+            oboma AI; tempo i pauza pod kontrolą.
+          </p>
+        </div>
+        <div class="status-pill" id="livePill">
+          <span class="dot" id="liveDot"></span>
+          <span id="liveText">Łączenie…</span>
+        </div>
+      </header>
+
+      <section class="challenge-panel" id="challengePanel" aria-labelledby="challengeHeading">
+        <h2 id="challengeHeading">Wyzwanie dnia (UTC)</h2>
+        <p class="challenge-meta mono" id="challengeMeta"></p>
+        <p class="challenge-rules" id="challengeRules"></p>
+        <div class="challenge-actions">
+          <button type="button" id="btnDailyStart" class="primary">Nowa sesja — to wyzwanie</button>
+          <button type="button" id="btnDailyCopyLink" class="ghost">Kopiuj link</button>
+        </div>
+        <div id="dailyLeaderboard" class="daily-lb" aria-live="polite"></div>
+      </section>
+
+      <section class="campaign-panel" id="campaignPanel" hidden aria-labelledby="campaignHeading">
+        <h2 id="campaignHeading">Kampania</h2>
+        <p class="campaign-sub mono" id="campaignSub"></p>
+        <div class="control-group">
+          <label for="campaignStep">Krok narracyjny</label>
+          <select id="campaignStep" class="human-select" aria-describedby="campaignIntro"></select>
+        </div>
+        <p class="campaign-modifiers mono" id="campaignModifiers"></p>
+        <div class="campaign-intro" id="campaignIntro" role="region"></div>
+        <button type="button" id="btnCampaignStart" class="primary">Nowa sesja — ta misja</button>
+      </section>
+
+      <section class="control-bar">
+        <div class="control-group">
+          <label for="delayRange">Tempo bota (ms między akcjami)</label>
+          <input type="range" id="delayRange" min="150" max="4000" step="50" value="700" />
+          <span id="delayLabel" class="mono">700 ms</span>
+        </div>
+        <div class="control-group row">
+          <button type="button" id="btnPause" class="toggle">Pauza</button>
+          <label class="check">
+            <input type="checkbox" id="chkAnim" checked />
+            Animacje
+          </label>
+          <label class="check" title="Ukrywa długi opis przy każdej opcji — mniej ściany tekstu">
+            <input type="checkbox" id="chkLegalCompact" />
+            Kompaktowe opcje ruchów
+          </label>
+        </div>
+        <div class="control-group">
+          <label for="humanRole">Kto gra ludzki</label>
+          <select id="humanRole" class="human-select" aria-describedby="humanHint">
+            <option value="">Tylko boty (obserwacja)</option>
+            <option value="p0">Ja — Strażnik (lewa strona, p0)</option>
+            <option value="p1">Ja — Rozwarstwienie (prawa strona, p1)</option>
+          </select>
+          <span class="human-hint mono" id="humanHint" role="note">
+            Wybierz stronę konfliktu, potem przy swojej turze klikaj „Wykonaj” przy opcji w „Co może zrobić…”.
+          </span>
+        </div>
+        <div class="control-group">
+          <label for="botStrategy">Strategia bota</label>
+          <select
+            id="botStrategy"
+            class="human-select"
+            aria-describedby="botStrategyHint"
+            aria-label="Strategia sztucznej inteligencji — ta sama dla obu stron, gdy grają boty"
+          ></select>
+          <p class="human-hint mono" id="botStrategyHint">Ładowanie opisów…</p>
+        </div>
+      </section>
+
+      <aside class="rules-panel">
+        <h2>Zasady (skrót)</h2>
+        <ul>
+          <li>
+            <strong>Fabuła:</strong> dwie siły toczą spór o szczelinę — w duelu widzisz je jako <em>Strażnik</em> (p0) i
+            <em>Rozwarstwienie</em> (p1). Karty to skrót taktyczny walki.
+          </li>
+          <li>Cel: zbić HP przeciwnika do 0.</li>
+          <li>W turze można zagrać do <strong>2 kart</strong>, potem koniec tury.</li>
+          <li><strong>Tarcza</strong> zjada obrażenia zanim dotkną HP.</li>
+          <li>Po twojej turze przeciwnik <strong>dobiera 1</strong> z talii; pusta talia = rosnące <strong>zmęczenie</strong> (obrażenia).</li>
+        </ul>
+      </aside>
+
+      <section class="deck-catalog-panel" id="deckCatalogSection">
+        <h2>Skąd są karty i ile ich jest</h2>
+        <p class="deck-intro" id="deckIntro"></p>
+        <div class="deck-table-wrap">
+          <table class="deck-table" id="deckTable">
+            <thead>
+              <tr>
+                <th>Karta</th>
+                <th>Szt.</th>
+                <th>Co robi</th>
+              </tr>
+            </thead>
+            <tbody id="deckTableBody"></tbody>
+          </table>
+        </div>
+        <p class="deck-footnote mono" id="deckTotal"></p>
+      </section>
+
+      <section class="sessions-bar">
+        <h2>Aktywne sesje</h2>
+        <p class="match-badge mono" id="matchBadge">—</p>
+        <ul id="sessionList"></ul>
+        <div class="actions">
+          <button type="button" id="btnRefresh">Odśwież listę</button>
+          <button type="button" id="btnNew" class="primary">Nowa sesja + bot</button>
+        </div>
+      </section>
+
+      <div class="arena">
+        <article class="player p0" id="panelP0">
+          <header>Strażnik <span class="tag">p0</span></header>
+          <div class="hpbar-wrap">
+            <div class="hpbar-fill p0fill" id="p0hpbar"></div>
+          </div>
+          <div class="stats">
+            <span class="hp" id="p0hp">20</span>
+            <span class="ward" id="p0ward">0</span>
+            <span class="deck mono" id="p0deck">talia 15</span>
+            <span class="disc mono" id="p0disc">odrzut 0</span>
+          </div>
+          <h3 class="hand-label">Ręka</h3>
+          <div class="hand" id="p0hand"></div>
+        </article>
+
+        <article class="center">
+          <div class="meta mono" id="meta">—</div>
+
+          <div class="narrative-block">
+            <h3>Stan gry</h3>
+            <div class="narrative" id="stateNarrative"></div>
+          </div>
+
+          <div class="narrative-block legal-block" id="legalBeforeWrap" hidden>
+            <h3>Z czego wybrano ostatni ruch</h3>
+            <p class="legal-head mono" id="legalBeforeHead"></p>
+            <div id="legalBeforeList" class="legal-options-root"></div>
+          </div>
+
+          <div class="narrative-block legal-block">
+            <h3>Co może zrobić aktywny gracz (teraz)</h3>
+            <p class="legal-head mono" id="legalNowHead"></p>
+            <div id="legalNowList" class="legal-options-root"></div>
+          </div>
+
+          <div class="narrative-block bot-brain">
+            <h3>Co „myśli” bot</h3>
+            <p class="reasoning" id="botReasoning">—</p>
+            <p class="effect-line" id="effectLine"></p>
+          </div>
+
+          <div class="last-played-wrap" id="lastPlayedWrap">
+            <h3>Ostatnia akcja</h3>
+            <p class="last-action" id="lastAction">Oczekiwanie…</p>
+            <div id="lastPlayedCard" class="last-played-slot"></div>
+          </div>
+
+          <div class="narrative-block">
+            <h3>Log</h3>
+            <div class="log" id="log"></div>
+          </div>
+        </article>
+
+        <article class="player p1" id="panelP1">
+          <header>Rozwarstwienie <span class="tag">p1</span></header>
+          <div class="hpbar-wrap">
+            <div class="hpbar-fill p1fill" id="p1hpbar"></div>
+          </div>
+          <div class="stats">
+            <span class="hp" id="p1hp">20</span>
+            <span class="ward" id="p1ward">0</span>
+            <span class="deck mono" id="p1deck">talia 15</span>
+            <span class="disc mono" id="p1disc">odrzut 0</span>
+          </div>
+          <h3 class="hand-label">Ręka</h3>
+          <div class="hand" id="p1hand"></div>
+        </article>
+      </div>
+    </div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

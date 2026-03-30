@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Szkarłatna przysięga — taktyka</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="winnerBanner" class="winner-banner hidden" aria-live="polite">
+      <div class="winner-inner">
+        <p class="winner-title">Koniec partii</p>
+        <p class="winner-line" id="winnerLine"></p>
+        <p class="winner-hint">Za chwilę następna partia na tej samej sesji…</p>
+      </div>
+    </div>
+
+    <div id="app">
+      <header class="top">
+        <div>
+          <h1>Szkarłatna przysięga</h1>
+          <p class="sub">
+            Seeker kontra Echo — turowa taktyka na siatce (FORGE rules module). Obserwuj, graj z botem (greedy) lub oboma AI.
+          </p>
+        </div>
+        <div class="status-pill" id="livePill">
+          <span class="dot" id="liveDot"></span>
+          <span id="liveText">Łączenie…</span>
+        </div>
+      </header>
+
+      <section class="control-bar">
+        <div class="control-group">
+          <label for="delayRange">Tempo bota (ms)</label>
+          <input type="range" id="delayRange" min="120" max="4000" step="50" value="650" />
+          <span id="delayLabel" class="mono">650 ms</span>
+        </div>
+        <div class="control-group row">
+          <button type="button" id="btnPause" class="toggle">Pauza</button>
+          <button type="button" id="btnRefresh" class="toggle ghost">Odśwież sesje</button>
+          <button type="button" id="btnNew" class="toggle primary">Nowa sesja</button>
+        </div>
+        <div class="control-group">
+          <label for="humanRole">Kto gra ludzki</label>
+          <select id="humanRole" class="human-select">
+            <option value="">Tylko boty (obserwacja)</option>
+            <option value="p0">Ja — Seeker (p0)</option>
+            <option value="p1">Ja — Echo (p1)</option>
+          </select>
+        </div>
+      </section>
+
+      <div class="layout">
+        <main class="board-wrap">
+          <div class="board-head">
+            <span class="badge mono" id="matchBadge">Partia #1</span>
+            <span class="badge mono dim" id="versionBadge"></span>
+          </div>
+          <div id="grid" class="grid" aria-label="Plansza"></div>
+          <div class="bars">
+            <div class="bar-block">
+              <div class="bar-title">Seeker</div>
+              <div class="hp-track"><div id="barP0" class="hp-fill seeker"></div></div>
+              <div class="mono stat-line" id="statP0"></div>
+            </div>
+            <div class="bar-block">
+              <div class="bar-title">Echo</div>
+              <div class="hp-track"><div id="barP1" class="hp-fill echo"></div></div>
+              <div class="mono stat-line" id="statP1"></div>
+            </div>
+          </div>
+          <p class="narrative mono" id="narrative"></p>
+          <p class="last-action mono" id="lastAction"></p>
+        </main>
+
+        <aside class="side">
+          <h2>Legalne ruchy</h2>
+          <p class="mono dim" id="legalNowHead">—</p>
+          <div id="legalNowList" class="legal-wrap"></div>
+          <h2>Sesje</h2>
+          <ul id="sessionList" class="session-list"></ul>
+        </aside>
+      </div>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

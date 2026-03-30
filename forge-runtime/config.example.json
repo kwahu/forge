@@ -1,0 +1,19 @@
+{
+  "$schema_comment": "Skopiuj do config.json i dostosuj.",
+  "poll_interval_seconds": 5,
+  "repo_root": "..",
+  "allowed_shell_prefixes": [
+    "npm ",
+    "pnpm ",
+    "yarn ",
+    "python ",
+    "py -m ",
+    "npx "
+  ],
+  "llm": {
+    "enabled": false,
+    "provider": "anthropic",
+    "model": "claude-sonnet-4-20250514",
+    "max_tokens": 4096
+  }
+}

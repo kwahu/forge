@@ -1,0 +1,33 @@
+# Backlog — Szkarłatna przysięga (skrót; FORGE iteration)
+# status: todo | doing | done
+
+items:
+  - id: SO-001
+    title: "PvE — fale / kolejni przeciwnicy (stan kampanii + NEXT_ENCOUNTER)"
+    status: todo
+    notes: "Rozszerzenie GameState lub osobny orchestrator nad rules"
+
+  - id: SO-002
+    title: "Więcej umiejętności (np. szarża 2 pola, krótki buff)"
+    status: todo
+
+  - id: SO-003
+    title: "Golden replay — drugi fixture (seed z wygraną p1) + CI"
+    status: todo
+    notes: "npx tsx scripts/write-golden-fixture.ts <seed>"
+
+  - id: SO-004
+    title: "POST /api/sessions/:id/undo (jeden krok)"
+    status: todo
+
+  - id: SO-005
+    title: "Spectator view — pełny stan + obie perspektywy w UI"
+    status: todo
+
+  - id: SO-GOLDEN-42
+    title: "Regresja: golden-greedy-seed42.json + replay.ts"
+    status: done
+
+  - id: SO-VALID-ACTIONS
+    title: "GET /api/sessions/:id/valid-actions"
+    status: done

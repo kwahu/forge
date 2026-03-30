@@ -1,0 +1,10 @@
+{
+  "name": "forge-workspace",
+  "private": true,
+  "scripts": {
+    "test:rift-duel": "npm --prefix games/rift-duel test",
+    "sim:rift-duel": "npm --prefix games/rift-duel run simulate --",
+    "spectate:rift-duel": "npm --prefix games/rift-duel run spectate --",
+    "serve:rift-duel": "npm --prefix games/rift-duel run server"
+  }
+}

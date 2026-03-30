@@ -1,0 +1,7 @@
+state/
+.env
+config.json
+*.local.json
+outbox/archive/
+__pycache__/
+*.py[cod]

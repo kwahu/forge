@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deepspire — runa w dół</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="endBanner" class="end-banner hidden" aria-live="polite">
+      <div class="end-inner">
+        <p class="end-title" id="endTitle">Koniec runy</p>
+        <p class="end-line" id="endLine"></p>
+        <p class="end-hint">Za chwilę nowy seed na tej samej sesji…</p>
+      </div>
+    </div>
+
+    <div id="app">
+      <header class="top">
+        <div>
+          <h1>Deepspire</h1>
+          <p class="sub">
+            Posłaniec schodzi w głąb wieży, by zamknąć rdzeń spiralny. Turowy roguelike — ten sam seed daje tę samą mapę.
+            Obserwuj bota albo przejmij kontrolę.
+          </p>
+        </div>
+        <div class="status-pill" id="livePill">
+          <span class="dot" id="liveDot"></span>
+          <span id="liveText">Łączenie…</span>
+        </div>
+      </header>
+
+      <section class="control-bar" aria-label="Sterowanie sesją">
+        <div class="control-group">
+          <label for="delayRange">Tempo bota (ms między turami)</label>
+          <input type="range" id="delayRange" min="120" max="3000" step="30" value="450" />
+          <span id="delayLabel" class="mono">450 ms</span>
+        </div>
+        <div class="control-group row">
+          <button type="button" id="btnPause" class="toggle">Pauza</button>
+          <button type="button" id="btnNewSession" class="toggle secondary">Nowa sesja</button>
+          <label class="check">
+            <input type="checkbox" id="chkLegalCompact" />
+            Kompaktowa lista akcji
+          </label>
+        </div>
+        <div class="control-group">
+          <label for="modeSelect" id="modeLabel">Tryb</label>
+          <select id="modeSelect" class="human-select" aria-describedby="modeHint">
+            <option value="spectate">Obserwacja (bot gra)</option>
+            <option value="human">Gram ja (klik / strzałki)</option>
+          </select>
+          <p class="human-hint mono" id="modeHint">
+            W trybie ludzkim wykonuj akcje z listy lub strzałkami (atak na wroga w danym kierunku). Spacja = czekaj.
+          </p>
+        </div>
+        <div class="control-group">
+          <label for="seedInput">Seed (opcjonalnie, pusta = losowy)</label>
+          <div class="seed-row">
+            <input type="text" id="seedInput" class="mono seed-input" inputmode="numeric" placeholder="np. 2026" />
+            <button type="button" id="btnChallengeSeed" class="toggle secondary seed-btn" title="Wstaw seed z wyzwania dnia (z /api/meta)">
+              Wyzwanie dnia
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div class="main-layout">
+        <section class="board-wrap" aria-label="Mapa">
+          <div class="board-meta mono" id="boardMeta"></div>
+          <div id="grid" class="grid" role="img" aria-label="Siatka lochu"></div>
+        </section>
+        <aside class="side-panel">
+          <h2>Co możesz zrobić</h2>
+          <p class="mono dim" id="legalHead"></p>
+          <div id="legalContainer" class="legal-container"></div>
+          <h2>Log</h2>
+          <ul id="log" class="log mono"></ul>
+        </aside>
+      </div>
+
+      <footer class="footer mono dim">
+        <span id="metaFooter">Ładowanie wersji…</span>
+      </footer>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Front Dryfu — obserwacja AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="endBanner" class="end-banner hidden" aria-live="polite">
+      <p class="end-title">Koniec partii</p>
+      <p class="end-line" id="endLine"></p>
+      <p class="end-hint">Za chwilę następna partia na tej sesji…</p>
+    </div>
+
+    <div id="app">
+      <header class="top">
+        <div>
+          <h1>Front Dryfu</h1>
+          <p class="sub">
+            Taktyka na siatce 5×5 — dwa fronty (<strong>Błękit</strong> / <strong>Bursztyn</strong>) walczą o przestrzeń
+            między filarami dryfu. Poniżej: <strong>tryb obserwatora</strong> (FORGE §7.2) — dwie heurystyki AI, pełna
+            widoczność planszy.
+          </p>
+        </div>
+        <div class="live-pill" id="livePill">
+          <span class="dot" id="liveDot"></span>
+          <span id="liveText">Łączenie…</span>
+        </div>
+      </header>
+
+      <section class="meta-bar mono" id="metaBar">
+        <span id="metaSession">sesja: —</span>
+        <span id="metaSeed">seed: —</span>
+        <span id="metaTurn">półtura: —</span>
+        <span id="metaVersion">zasady: —</span>
+      </section>
+
+      <section class="controls">
+        <div class="control">
+          <label for="delayRange">Tempo AI (ms)</label>
+          <input type="range" id="delayRange" min="120" max="4000" step="30" value="650" />
+          <span class="mono delay-label" id="delayLabel">650 ms</span>
+        </div>
+        <div class="control row">
+          <button type="button" id="btnPause" class="btn-toggle">Pauza</button>
+          <button type="button" id="btnNewSession" class="btn-secondary">Nowa sesja</button>
+        </div>
+        <div class="control">
+          <label for="stratP0">Strategia Błękit (p0)</label>
+          <select id="stratP0" class="select" aria-describedby="stratHint"></select>
+        </div>
+        <div class="control">
+          <label for="stratP1">Strategia Bursztyn (p1)</label>
+          <select id="stratP1" class="select" aria-describedby="stratHint"></select>
+        </div>
+        <p class="hint mono" id="stratHint">
+          Spike vs Aggro jako domyślny „trening” (FORGE §6.4). Losowy tylko do widowiska.
+        </p>
+        <div class="control">
+          <label for="humanRole">Sterowanie ludzkie (opcjonalnie)</label>
+          <select id="humanRole" class="select" aria-describedby="humanHint">
+            <option value="">Tylko AI (obserwacja)</option>
+            <option value="p0">Ja — Błękit (p0)</option>
+            <option value="p1">Ja — Bursztyn (p1)</option>
+          </select>
+        </div>
+        <p class="hint mono" id="humanHint">Przy swojej turze wybierz akcję z listy „Legalne ruchy” i kliknij Wykonaj.</p>
+      </section>
+
+      <main class="main-grid">
+        <div class="board-wrap">
+          <div class="board-head">
+            <span class="chip p0" id="chipP0">Błękit</span>
+            <span class="turn-badge mono" id="turnBadge">Aktywny: —</span>
+            <span class="chip p1" id="chipP1">Bursztyn</span>
+          </div>
+          <div id="board" class="board" aria-label="Plansza 5 na 5"></div>
+        </div>
+        <aside class="side">
+          <h2>Ostatni krok</h2>
+          <p class="last-move mono" id="lastMove">—</p>
+          <h2>Legalne ruchy</h2>
+          <p class="legal-head mono" id="legalHead">—</p>
+          <ol class="legal-list" id="legalList"></ol>
+        </aside>
+      </main>
+
+      <section class="log-section">
+        <h2>Dziennik</h2>
+        <pre class="log mono" id="log"></pre>
+      </section>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

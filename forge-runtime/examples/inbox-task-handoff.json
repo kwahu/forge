@@ -1,0 +1,7 @@
+{
+  "type": "handoff",
+  "payload": {
+    "title": "Przykład — co ma zrobić Cursor",
+    "body": "Opisz tutaj zadanie dla asystenta w Cursorze. Orchestrator tylko zapisze plik w outbox/ — Ty (lub AI w czacie) wdrażacie zmiany w kodzie."
+  }
+}

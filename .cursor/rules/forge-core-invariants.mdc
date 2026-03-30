@@ -1,0 +1,21 @@
+---
+description: Inwarianty jakości (determinism, metryki, fail loudly, BC)
+alwaysApply: true
+---
+
+# FORGE Core Invariants (niezmienne)
+
+## 1) Determinizm + replay
+- Każda zmiana dotykająca `rules engine / rng / valid-actions / applyAction / checkWinCondition` musi pozostać deterministyczna dla `seed` i wspierać replay.
+- Jeśli zmieniasz sposób losowania lub strukturę stanu, dodaj/aktualizuj test replay i upewnij się, że wynik jest odtwarzalny.
+
+## 2) Dane > opinie
+- Gdy proponujesz „to poprawi fun / balans”, musisz podać proxy metryki lub kryteria weryfikacji (np. win-rate, avg game length, win-margin, drift threshold).
+
+## 3) Fail loudly
+- Błędy silnika traktuj jako wyjątki (brak cichego fallbacku). Jeżeli coś jest nielegalne/niemożliwe, nie próbuj „naprawiać” po cichu.
+
+## 4) Backward compatibility (replay/snapshot)
+- Nowa wersja nie może niejawnie złamać istniejących replayów/snapshotów.
+- Jeśli musisz złamać kompatybilność: opisz dlaczego, jakie wersjonowanie/bump jest wymagane i jak odzyskać poprzednie replays (regeneracja golden, migracja, itp.).
+

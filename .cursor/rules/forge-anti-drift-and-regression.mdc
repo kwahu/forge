@@ -1,0 +1,21 @@
+---
+description: Anty-dryf + regresja (golden sessions, drift alerts)
+alwaysApply: true
+---
+
+# FORGE Anti-Drift + Regression (proces jakości)
+
+## 5) Anti-Drift Mechanism (vision alignment)
+- Jeśli w dyskusji/planie pojawia się dryf wizji (inna mechanika celu, inny zachowany „core loop”, zmiana priorytetu produktu), zatrzymaj i zażądaj `vision alignment` od `Producer` (odwołując się do dokumentu wizji).
+- Co 1 iterację dotykającą core loop: oczekuj krótkiego „Vision check” i decyzji: `align` albo `hold/rewalk`.
+
+## 6) Regression Testing (golden sessions)
+- Przed/po zmianach dotykających logiki gry/balansu uruchamiaj lub dodaj regresję w oparciu o „golden sessions” (replay ze znanymi seedami) oraz porównuj metryki.
+- Jeśli kluczowa metryka dryfuje powyżej progu (np. >15%): wymagaj raportu `metric drift` i decyzji `fix or rollback`.
+
+## Minimalny checklist przy PR/zmianie rules/balance
+- `design_lock_green` potwierdzone (jeśli dotyczy designu)
+- replay deterministyczny dla znanych seedów
+- aktualizacja/generacja golden sessions (jeśli zaszła świadoma zmiana)
+- metryki sukcesu i drift threshold opisane w decyzji
+

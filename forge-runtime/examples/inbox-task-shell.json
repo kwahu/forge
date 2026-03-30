@@ -1,0 +1,7 @@
+{
+  "type": "shell",
+  "payload": {
+    "command": "python -m compileall forge-runtime/orchestrator",
+    "timeout_seconds": 60
+  }
+}

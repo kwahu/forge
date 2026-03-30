@@ -1,0 +1,45 @@
+---
+description: FORGE OS — Design Lock + Decision Quorum (anty-wyprzedzanie)
+alwaysApply: true
+---
+
+# FORGE Operating System Guardrails
+
+## 1) Design Lock (anty-wyprzedzanie)
+- Przed jakąkolwiek implementacją (pisaniem kodu, poprawianiem interfejsów, zmianą logiki gry) musi istnieć `design_lock_green`.
+- `design_lock_green` jest uznawane tylko wtedy, gdy są jawne: kompletna specyfikacja (`design_spec`), jednoznaczne `acceptance_criteria` oraz `success_metrics`, a `GD + Producer` zatwierdzili zgodność z wizją.
+- Jeśli brakuje któregokolwiek z elementów, zatrzymaj i przejdź do fazy `DESIGN` (nie „domyślaj” brakujących części).
+
+## 2) Decision Quorum (każda decyzja o następnym kroku)
+- Przed każdym przejściem fazy (Design→Build→Test→Review→Decide→Plan) przedstaw werdykt wszystkich agentów: `PM, GD, Producer, DEV, QA, Reviewer, Marketing`.
+- Jeśli którekolwiek `verdict != go` (tj. `hold/no-go`), następny krok nie startuje.
+
+## 3) Format odpowiedzi (gdy wybierasz next step)
+Zawsze dodaj blok:
+
+```text
+DECISION_QUORUM(next_step=<Faza>):
+PM: verdict=<go|hold|no-go>; rationale=...
+GD: verdict=<go|hold|no-go>; rationale=...
+Producer: verdict=<go|hold|no-go>; rationale=...
+DEV: verdict=<go|hold|no-go>; rationale=...
+QA: verdict=<go|hold|no-go>; rationale=...
+Reviewer: verdict=<go|hold|no-go>; rationale=...
+Marketing: verdict=<go|hold|no-go>; rationale=...
+```
+
+Jeżeli `next_step` dotyczy implementacji, dodatkowo dołącz `design_lock_id` w opisie planowanych zmian.
+
+## 4) FRAMEWORK_SUGGESTIONS (usprawnienia procesu)
+Jeśli w trakcie zadania zauważysz brakujący element frameworku, niespójność, lukę w egzekucji procesu albo sytuację, w której „łatwo wyprzedzić design”, zawsze dodaj na końcu odpowiedzi blok:
+
+```text
+FRAMEWORK_SUGGESTIONS:
+problem: <co nie działa / co jest niejednoznaczne>
+proposed_change: <konkretna zmiana w zasadach lub plikach>
+acceptance_criteria: <kiedy uznajemy, że działa>
+suggested_location: <gdzie to umieścić: np. FORGE_MASTER_PLAN.md / .cursor/rules/... / forge-runtime/...>
+```
+
+Jeżeli nie masz pewności co do lokalizacji lub kryteriów akceptacji, dodaj 1-2 pytania doprecyzowujące w sekcji `FRAMEWORK_SUGGESTIONS`.
+

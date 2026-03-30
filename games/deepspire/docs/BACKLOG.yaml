@@ -1,0 +1,33 @@
+# Deepspire — backlog (FORGE §6.4: struktura + od pierwszego dnia)
+# Id: DS-<obszar>-<nr>
+
+items:
+  - id: DS-UX-001
+    title: Grupowanie akcji (ruch / schody / czekaj) + widok kompaktowy listy legalnych ruchów
+    type: polish
+    priority: P2
+    status: done
+
+  - id: DS-BOT-001
+    title: Macierz / golden seeds po zmianie pickSimpleBotAction (jak rift-duel strategy-matrix)
+    type: feature
+    priority: P2
+    status: done
+
+  - id: DS-RET-001
+    title: Challenge dnia — jawny seed + zapis w MANIFEST (§6.4 live ops)
+    type: feature
+    priority: P3
+    status: done
+
+  - id: DS-BOT-002
+    title: Pełna macierz strategii (gdy pojawią się alternatywne heurystyki bota)
+    type: feature
+    priority: P3
+    status: backlog
+
+  - id: DS-BOT-003
+    title: Heurystyka bez długich pętli na seedach typu 123 (losowy krok / pamięć stanu)
+    type: balance
+    priority: P3
+    status: backlog

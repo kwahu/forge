@@ -1,0 +1,34 @@
+# Changelog — Szkarłatna przysięga (FORGE §2.3, czytelny dla agentów)
+
+- version: "0.2.1"
+  date: "2026-03-30"
+  changes:
+    engine:
+      - added: "src/replay.ts — odtwarzanie listy akcji, combatSnapshot"
+      - added: "GET /api/sessions/:id/valid-actions"
+      - added: "Golden replay: tests/fixtures/golden-greedy-seed42.json + vitest"
+      - added: "scripts/write-golden-fixture.ts, docs/BACKLOG.yaml"
+  reason: "Regresja deterministyczna (FORGE E3) + endpoint valid-actions z planu API"
+  test_results_summary:
+    note: "vitest golden-replay + istniejące rules/enemyAi"
+
+- version: "0.1.1"
+  date: "2026-03-30"
+  changes:
+    balance:
+      - modified: "HP obu stron: 24/20 → 22/22 (symetria Seeker/Echo przy tym samym AI)"
+    engine:
+      - added: "REST + WebSocket (games/scarlet-oath/server) — sesje, akcje ludzkie, bot greedy"
+      - added: "Klient statyczny (grid, paski HP, lista legalnych ruchów)"
+    content:
+      - added: "Skrypt npm run balance — rozkład zwycięstw greedy vs greedy (~800 seedów)"
+  reason: "Usługa API-first (FORGE), balans pod mirror-AI, metryki"
+  test_results_summary:
+    note: "Vitest rules + enemyAi; balance-matrix lokalnie"
+
+- version: "0.1.0"
+  date: "2026-03-30"
+  changes:
+    rules:
+      - added: "MVP taktyki: siatka 6×5, AP=3, MOVE/STRIKE/WARD/END_TURN"
+  reason: "Pierwszy rules module RPG w FORGE"

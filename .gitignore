@@ -1,0 +1,39 @@
+### Dependencies
+node_modules/
+**/node_modules/
+
+### Build / output folders
+dist/
+**/dist/
+build/
+**/build/
+out/
+**/out/
+coverage/
+**/coverage/
+.next/
+**/.next/
+.turbo/
+**/.turbo/
+
+### Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+### Environment / secrets
+.env
+.env.*
+**/.env
+**/.env.*
+*.pem
+*.key
+**/*.pem
+**/*.key
+**/*credentials*.json
+
+### OS files
+.DS_Store
+Thumbs.db
+

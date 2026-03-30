@@ -1,0 +1,8 @@
+{
+  "id": "orch-20260329-sim",
+  "type": "shell",
+  "payload": {
+    "command": "npm run sim:rift-duel -- --games=120 --seed=20260329",
+    "timeout_seconds": 180
+  }
+}

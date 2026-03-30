@@ -1,0 +1,50 @@
+# Backlog FORGE — Front Dryfu (drift-front)
+# status: backlog | ready | in_progress | testing | review | done
+
+items:
+  - id: DF-BOT-001
+    title: Heurystyka turtle — mirror turtle vs turtle (często remis na limicie półtur)
+    type: balance
+    priority: P2
+    phase: VERTICAL_SLICE
+    status: backlog
+    assigned_to: DEV
+    requested_by: QA
+    version_target: "0.2.2"
+    notes:
+      - "Macierz: turtle vs turtle → 24/24 remis przy 24 seedach (playtest:matrix); rozważyć asymetryczny tie-break lub fazę 'obowiązkowego zbliżenia'"
+    effort_estimate: S
+
+  - id: DF-CI-002
+    title: Golden seeds w CI (już w Vitest) + opcjonalnie gate macierzy przed releasem
+    type: polish
+    priority: P2
+    phase: PLATFORM
+    status: done
+    assigned_to: DEV
+    notes:
+      - "tests/golden-seeds.test.ts — spike vs aggro + smoke turtle vs spike"
+    effort_estimate: S
+
+  - id: DF-FEED-003
+    title: Pierwszy dokument feedbacku FEEDBACK_FB-DF-001 (metryki + metodologia)
+    type: content
+    priority: P2
+    phase: VERTICAL_SLICE
+    status: backlog
+    assigned_to: GD
+    dependencies: []
+    acceptance_criteria:
+      - Nagłówek z wersją pakietu zgodną z package.json
+      - Tabela macierzy lub skrót + wnioski dla Producenta
+    effort_estimate: S
+
+  - id: DF-UX-004
+    title: Challenge dnia — stały seed w URL + skrót do udostępnienia
+    type: feature
+    priority: P3
+    phase: LIVE_OPS
+    status: backlog
+    assigned_to: DEV
+    version_target: "0.3.0"
+    effort_estimate: M
