@@ -40,6 +40,7 @@ export type Dir = "n" | "e" | "s" | "w";
 
 export type GameAction =
   | { type: "MOVE"; dir: Dir }
+  | { type: "DASH"; dir: Dir }
   | { type: "STRIKE" }
   | { type: "WARD" }
   | { type: "END_TURN" };

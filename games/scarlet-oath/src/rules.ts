@@ -14,6 +14,7 @@ import type {
 export const AP_PER_TURN = 3;
 export const STRIKE_COST = 2;
 export const MOVE_COST = 1;
+export const DASH_COST = 2;
 export const WARD_COST = 1;
 export const STRIKE_DAMAGE = 5;
 export const WARD_GAIN = 4;
@@ -79,7 +80,7 @@ export function createInitialState(seed: number): GameState {
   return {
     genre: "rpg",
     gameId: "scarlet-oath",
-    contentVersion: "0.1.1",
+    contentVersion: "0.2.0",
     turnIndex: 0,
     activePlayerId: first,
     phase: "tactics",
@@ -129,6 +130,17 @@ export function getValidActions(state: GameState): GameAction[] {
       if (!inBounds(state.grid, next)) continue;
       if (occupiedBy(state, next, pid) !== undefined) continue;
       actions.push({ type: "MOVE", dir });
+    }
+  }
+
+  if (u.ap >= DASH_COST) {
+    for (const dir of dirs) {
+      const mid = add(pos, DELTA[dir]);
+      const dest = add(mid, DELTA[dir]);
+      if (!inBounds(state.grid, mid)) continue;
+      if (!inBounds(state.grid, dest)) continue;
+      if (occupiedBy(state, dest, pid) !== undefined) continue;
+      actions.push({ type: "DASH", dir });
     }
   }
 
@@ -186,6 +198,21 @@ export function applyAction(state: GameState, action: GameAction): GameState {
       units: {
         ...state.units,
         [pid]: { ...u, ap: u.ap - MOVE_COST },
+      },
+    };
+  } else if (action.type === "DASH") {
+    if (u.ap < DASH_COST) return state;
+    const mid = add(pos, DELTA[action.dir]);
+    const dest = add(mid, DELTA[action.dir]);
+    if (!inBounds(state.grid, mid)) return state;
+    if (!inBounds(state.grid, dest)) return state;
+    if (occupiedBy(state, dest, pid) !== undefined) return state;
+    nextState = {
+      ...state,
+      positions: { ...state.positions, [pid]: dest },
+      units: {
+        ...state.units,
+        [pid]: { ...u, ap: u.ap - DASH_COST },
       },
     };
   } else if (action.type === "STRIKE") {

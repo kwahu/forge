@@ -39,6 +39,18 @@ describe("golden replay (regresja)", () => {
     expect(snap).toEqual(f.expected.snapshot);
   });
 
+  it("fixture greedy seed 4 — wygrana p1 (SO-003)", () => {
+    const f = loadGolden("golden-greedy-seed4.json");
+    expect(f.gameId).toBe("scarlet-oath");
+    expect(f.contentVersion).toBe(createInitialState(0).contentVersion);
+    expect(f.expected.winner).toBe("p1");
+
+    const state = replayActions(f.seed, f.actions);
+    const snap = combatSnapshot(state);
+    expect(snap.outcome).toEqual({ status: "ended", winner: "p1" });
+    expect(snap).toEqual(f.expected.snapshot);
+  });
+
   it("replay odrzuca nielegalną akcję", () => {
     const f = loadGolden("golden-greedy-seed42.json");
     const bad = [...f.actions];
@@ -49,5 +61,8 @@ describe("golden replay (regresja)", () => {
   it("actionsEqual rozróżnia kierunki", () => {
     expect(actionsEqual({ type: "MOVE", dir: "n" }, { type: "MOVE", dir: "n" })).toBe(true);
     expect(actionsEqual({ type: "MOVE", dir: "n" }, { type: "MOVE", dir: "s" })).toBe(false);
+    expect(actionsEqual({ type: "DASH", dir: "e" }, { type: "DASH", dir: "e" })).toBe(true);
+    expect(actionsEqual({ type: "DASH", dir: "e" }, { type: "DASH", dir: "w" })).toBe(false);
+    expect(actionsEqual({ type: "DASH", dir: "n" }, { type: "MOVE", dir: "n" })).toBe(false);
   });
 });

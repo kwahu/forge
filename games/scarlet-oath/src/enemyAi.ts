@@ -1,5 +1,5 @@
 /**
- * Heurystyka „taktyczna”: STRIKE → ruch minimalizujący Manhattan do przeciwnika → WARD → END_TURN.
+ * Heurystyka „taktyczna": STRIKE → ruch minimalizujący Manhattan do przeciwnika (MOVE lub DASH) → WARD → END_TURN.
  * Działa dla dowolnego aktywnego gracza (testy, symulacja p0 vs p1 z tą samą logiką).
  */
 import {
@@ -21,6 +21,13 @@ function manhattan(a: Vec2, b: Vec2): number {
 
 const DIR_RANK: Record<Dir, number> = { n: 0, e: 1, s: 2, w: 3 };
 
+const DELTA: Record<Dir, Vec2> = {
+  n: { x: 0, y: -1 },
+  e: { x: 1, y: 0 },
+  s: { x: 0, y: 1 },
+  w: { x: -1, y: 0 },
+};
+
 /** Wybór akcji dla aktywnego gracza — greedy vs przeciwnik. */
 export function pickGreedyAction(state: GameState): GameAction {
   const me = state.activePlayerId;
@@ -32,25 +39,34 @@ export function pickGreedyAction(state: GameState): GameAction {
   const strike = valid.find((x) => x.type === "STRIKE");
   if (strike) return strike;
 
-  const moves = valid.filter((x): x is Extract<GameAction, { type: "MOVE" }> => x.type === "MOVE");
-  if (moves.length > 0) {
-    const DELTA: Record<Dir, Vec2> = {
-      n: { x: 0, y: -1 },
-      e: { x: 1, y: 0 },
-      s: { x: 0, y: 1 },
-      w: { x: -1, y: 0 },
-    };
-    let best = moves[0]!;
-    let bestDist = Infinity;
-    for (const m of moves) {
-      const np = { x: posMe.x + DELTA[m.dir].x, y: posMe.y + DELTA[m.dir].y };
-      const d = manhattan(np, posOpp);
-      if (d < bestDist || (d === bestDist && DIR_RANK[m.dir] < DIR_RANK[best.dir])) {
-        bestDist = d;
-        best = m;
-      }
+  // Zbierz wszystkie opcje ruchu (MOVE i DASH) i wybierz te, która minimalizuje dystans do przeciwnika.
+  // Przy remisie dystansu preferuj MOVE (tanszy), potem nizszy DIR_RANK.
+  type MoveOpt = { action: Extract<GameAction, { type: "MOVE" | "DASH" }>; dist: number; cost: number };
+  const moveOpts: MoveOpt[] = [];
+
+  for (const a of valid) {
+    if (a.type === "MOVE") {
+      const np = { x: posMe.x + DELTA[a.dir].x, y: posMe.y + DELTA[a.dir].y };
+      moveOpts.push({ action: a, dist: manhattan(np, posOpp), cost: 1 });
+    } else if (a.type === "DASH") {
+      const np = {
+        x: posMe.x + 2 * DELTA[a.dir].x,
+        y: posMe.y + 2 * DELTA[a.dir].y,
+      };
+      moveOpts.push({ action: a, dist: manhattan(np, posOpp), cost: 2 });
     }
-    return best;
+  }
+
+  if (moveOpts.length > 0) {
+    let best = moveOpts[0]!;
+    for (const opt of moveOpts) {
+      const isBetter =
+        opt.dist < best.dist ||
+        (opt.dist === best.dist && opt.cost < best.cost) ||
+        (opt.dist === best.dist && opt.cost === best.cost && DIR_RANK[opt.action.dir] < DIR_RANK[best.action.dir]);
+      if (isBetter) best = opt;
+    }
+    return best.action;
   }
 
   const ward = valid.find((x) => x.type === "WARD");

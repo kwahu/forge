@@ -18,6 +18,7 @@ import {
   createInitialState,
   getValidActions,
 } from "../src/rules.js";
+import { replayActions } from "../src/replay.js";
 import type { GameAction, GameState, PlayerId } from "../src/types.js";
 import { describeLegalActions, playerLabelPl } from "./legalActions.js";
 
@@ -82,6 +83,7 @@ function legalPayload(state: GameState) {
 function actionsEqual(a: GameAction, b: GameAction): boolean {
   if (a.type !== b.type) return false;
   if (a.type === "MOVE" && b.type === "MOVE") return a.dir === b.dir;
+  if (a.type === "DASH" && b.type === "DASH") return a.dir === b.dir;
   return true;
 }
 
@@ -92,6 +94,7 @@ function summarizeAction(before: GameState, action: GameAction): string {
   if (action.type === "WARD") return `${who} · tarcza`;
   if (action.type === "STRIKE") return `${who} · cios (${STRIKE_DAMAGE})`;
   if (action.type === "MOVE") return `${who} · ruch ${action.dir}`;
+  if (action.type === "DASH") return `${who} · szarża ${action.dir}`;
   return `${who} · ?`;
 }
 
@@ -261,9 +264,11 @@ function parseAction(body: unknown): GameAction | null {
   if (t === "END_TURN") return { type: "END_TURN" };
   if (t === "STRIKE") return { type: "STRIKE" };
   if (t === "WARD") return { type: "WARD" };
-  if (t === "MOVE" && typeof (a as { dir?: unknown }).dir === "string") {
+  if ((t === "MOVE" || t === "DASH") && typeof (a as { dir?: unknown }).dir === "string") {
     const d = (a as { dir: string }).dir;
-    if (d === "n" || d === "e" || d === "s" || d === "w") return { type: "MOVE", dir: d };
+    if (d === "n" || d === "e" || d === "s" || d === "w") {
+      return t === "MOVE" ? { type: "MOVE", dir: d } : { type: "DASH", dir: d };
+    }
   }
   return null;
 }
@@ -395,6 +400,32 @@ app.post("/api/sessions/:id/action", (req, res) => {
     broadcastEnded(sess);
   }
 
+  res.json({ ok: true, seq: sess.seq });
+});
+
+/** SO-004: cofnięcie ostatniej akcji o 1 krok (replay bez ostatniego wpisu historii). */
+app.post("/api/sessions/:id/undo", (req, res) => {
+  const sess = sessions.get(req.params.id);
+  if (!sess) {
+    res.status(404).json({ error: "not_found" });
+    return;
+  }
+  if (sess.state.history.length === 0) {
+    res.status(400).json({ error: "nothing_to_undo" });
+    return;
+  }
+
+  const prevActions = sess.state.history.slice(0, -1).map((e) => e.action);
+  sess.state = replayActions(sess.matchSeed, prevActions);
+  sess.seq = Math.max(0, sess.seq - 1);
+
+  stopBot(sess);
+  startBot(sess);
+  broadcast(sess, {
+    type: "snapshot",
+    ...snapshotFields(sess),
+    message: "Cofnięto ostatnią akcję.",
+  });
   res.json({ ok: true, seq: sess.seq });
 });
 

@@ -5,8 +5,10 @@ import {
   checkWinCondition,
   createInitialState,
   getAIContext,
+  getValidActions,
   getVisibility,
 } from "../src/rules.js";
+import type { PlayerId } from "../src/types.js";
 
 describe("scarlet-oath rules", () => {
   it("createInitialState jest deterministyczny", () => {
@@ -73,5 +75,56 @@ describe("scarlet-oath rules", () => {
   it("symulacja greedy kończy partię (silnik nie zapętla się bez obrażeń)", () => {
     const r = simulateGreedyVersus(12345, 8000);
     expect(r.aborted).toBe(false);
+  });
+
+  it("DASH przesuwa o 2 pola i kosztuje 2 AP", () => {
+    let s = createInitialState(0);
+    // ustaw p0 aktywnym z 3 AP i miejscem na dash w kierunku e
+    s = {
+      ...s,
+      activePlayerId: "p0",
+      positions: { p0: { x: 0, y: 2 }, p1: { x: 5, y: 2 } },
+      units: {
+        p0: { ...s.units.p0, ap: 3 },
+        p1: { ...s.units.p1, ap: 0 },
+      },
+    };
+    const before = s.units.p0.ap;
+    s = applyAction(s, { type: "DASH", dir: "e" });
+    expect(s.positions.p0).toEqual({ x: 2, y: 2 });
+    expect(s.units.p0.ap).toBe(before - 2);
+  });
+
+  it("DASH jest w legalnych akcjach gdy jest miejsce i wystarczy AP", () => {
+    let s = createInitialState(0);
+    s = {
+      ...s,
+      activePlayerId: "p0",
+      positions: { p0: { x: 0, y: 2 }, p1: { x: 5, y: 2 } },
+      units: {
+        p0: { ...s.units.p0, ap: 3 },
+        p1: { ...s.units.p1, ap: 0 },
+      },
+    };
+    const valid = getValidActions(s);
+    const dashes = valid.filter((a) => a.type === "DASH");
+    expect(dashes.length).toBeGreaterThan(0);
+  });
+
+  it("DASH nie przechodzi przez granicę planszy", () => {
+    let s = createInitialState(0);
+    s = {
+      ...s,
+      activePlayerId: "p0",
+      positions: { p0: { x: 0, y: 2 }, p1: { x: 5, y: 2 } },
+      units: {
+        p0: { ...s.units.p0, ap: 3 },
+        p1: { ...s.units.p1, ap: 0 },
+      },
+    };
+    const valid = getValidActions(s);
+    // p0 na x=0: DASH na zachód (x=-2) i północ (y=-2) powinny być niedozwolone
+    const dashW = valid.find((a) => a.type === "DASH" && a.dir === "w");
+    expect(dashW).toBeUndefined();
   });
 });

@@ -7,6 +7,7 @@ import type { GameAction, GameState, PlayerId } from "./types.js";
 export function actionsEqual(a: GameAction, b: GameAction): boolean {
   if (a.type !== b.type) return false;
   if (a.type === "MOVE" && b.type === "MOVE") return a.dir === b.dir;
+  if (a.type === "DASH" && b.type === "DASH") return a.dir === b.dir;
   return true;
 }
 

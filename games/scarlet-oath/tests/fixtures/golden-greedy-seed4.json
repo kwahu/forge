@@ -2,11 +2,11 @@
   "gameId": "scarlet-oath",
   "contentVersion": "0.2.0",
   "profile": "greedy-vs-greedy",
-  "seed": 42,
+  "seed": 4,
   "actions": [
     {
       "type": "DASH",
-      "dir": "w"
+      "dir": "e"
     },
     {
       "type": "MOVE",
@@ -50,14 +50,14 @@
     },
     {
       "type": "MOVE",
-      "dir": "e"
+      "dir": "s"
     },
     {
       "type": "END_TURN"
     },
     {
       "type": "MOVE",
-      "dir": "e"
+      "dir": "s"
     },
     {
       "type": "STRIKE"
@@ -70,14 +70,14 @@
     },
     {
       "type": "MOVE",
-      "dir": "e"
+      "dir": "n"
     },
     {
       "type": "END_TURN"
     },
     {
       "type": "MOVE",
-      "dir": "e"
+      "dir": "n"
     },
     {
       "type": "STRIKE"
@@ -90,46 +90,46 @@
     },
     {
       "type": "MOVE",
-      "dir": "e"
+      "dir": "s"
     },
     {
       "type": "END_TURN"
     },
     {
       "type": "MOVE",
-      "dir": "e"
+      "dir": "s"
     },
     {
       "type": "STRIKE"
     }
   ],
   "expected": {
-    "winner": "p0",
+    "winner": "p1",
     "snapshot": {
       "contentVersion": "0.2.0",
       "turnIndex": 9,
-      "activePlayerId": "p0",
+      "activePlayerId": "p1",
       "positions": {
         "p0": {
-          "x": 4,
-          "y": 0
+          "x": 3,
+          "y": 1
         },
         "p1": {
-          "x": 5,
-          "y": 0
+          "x": 4,
+          "y": 1
         }
       },
       "p0": {
-        "hp": 2,
+        "hp": 0,
         "shield": 0
       },
       "p1": {
-        "hp": 0,
+        "hp": 2,
         "shield": 0
       },
       "outcome": {
         "status": "ended",
-        "winner": "p0"
+        "winner": "p1"
       }
     }
   }
