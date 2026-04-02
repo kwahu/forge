@@ -51,6 +51,14 @@ export function describeLegalActions(state: GameState): {
         action,
       };
     }
+    if (action.type === "DASH") {
+      return {
+        n: i + 1,
+        shortLabel: `Szarża ${DIR_PL[action.dir] ?? action.dir}`,
+        detail: `Koszt 2 AP: skok 2 pola w kierunku ${action.dir}.`,
+        action,
+      };
+    }
     if (action.type === "MOVE") {
       return {
         n: i + 1,

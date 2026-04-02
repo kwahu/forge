@@ -1,5 +1,26 @@
 # Changelog — Szkarłatna przysięga (FORGE §2.3, czytelny dla agentów)
 
+- version: "0.3.0"
+  date: "2026-04-02"
+  changes:
+    rules:
+      - added: "akcja DASH (szarża 2 pola, koszt 2 AP) w src/rules.ts + src/types.ts"
+      - modified: "contentVersion: 0.1.1 → 0.2.0 (FORGE: zmiana zasad = bump content)"
+    engine:
+      - added: "POST /api/sessions/:id/undo — cofnięcie ostatniej akcji (SO-004)"
+      - added: "Golden fixture: tests/fixtures/golden-greedy-seed4.json (wygrana p1, SO-003)"
+      - modified: "pickGreedyAction — uwzględnia DASH przy wyborze ruchu (src/enemyAi.ts)"
+      - modified: "actionsEqual — obsługa DASH z kierunkiem (src/replay.ts)"
+      - modified: "legalActions — etykieta 'Szarża' dla DASH (server/legalActions.ts)"
+      - modified: "golden-greedy-seed42.json — zregenerowany pod contentVersion 0.2.0"
+    tests:
+      - added: "3 testy DASH w tests/rules.test.ts"
+      - added: "test fixture golden-greedy-seed4 (wygrana p1) w tests/golden-replay.test.ts"
+      - added: "rozszerzony actionsEqual test (DASH) w tests/golden-replay.test.ts"
+  reason: "SO-002 (DASH), SO-003 (drugi golden fixture), SO-004 (undo endpoint)"
+  test_results_summary:
+    note: "vitest 16/16 pass (3 pliki testów)"
+
 - version: "0.2.1"
   date: "2026-03-30"
   changes:

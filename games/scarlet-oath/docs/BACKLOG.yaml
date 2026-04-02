@@ -9,16 +9,18 @@ items:
 
   - id: SO-002
     title: "Więcej umiejętności (np. szarża 2 pola, krótki buff)"
-    status: todo
+    status: done
+    notes: "Dodano DASH (szarża 2 pola, koszt 2 AP) — src/rules.ts, src/types.ts, enemyAi.ts"
 
   - id: SO-003
     title: "Golden replay — drugi fixture (seed z wygraną p1) + CI"
-    status: todo
-    notes: "npx tsx scripts/write-golden-fixture.ts <seed>"
+    status: done
+    notes: "tests/fixtures/golden-greedy-seed4.json — p1 wygrywa (29 akcji)"
 
   - id: SO-004
     title: "POST /api/sessions/:id/undo (jeden krok)"
-    status: todo
+    status: done
+    notes: "Replay z historii minus ostatnia akcja; broadcast snapshot po cofnięciu"
 
   - id: SO-005
     title: "Spectator view — pełny stan + obie perspektywy w UI"
